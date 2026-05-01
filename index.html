@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Ibrahim | Mechatronics Engineer</title>
+    <meta name="description" content="Portfolio of Mohamed Ibrahim, a Mechatronics Engineer specializing in Robotics, Embedded Systems, and Hardware-Software integration.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Sora:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-circle"></div>
+            <div class="loader-text">ENGINEERING<span>.</span></div>
+        </div>
+    </div>
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Background Animated Orbs -->
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <header id="header">
+        <nav class="container">
+            <div class="logo">M. IBRAHIM<span>.</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+            <div class="mobile-toggle" id="mobile-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content reveal-zoom">
+                    <span class="badge">Mechatronics Engineer</span>
+                    <h1>Designing the Future of <span class="gradient-text">Robotics</span> & Automation</h1>
+                    <p>I am Mohamed Ibrahim, an engineering student passionate about bridging the gap between Hardware and Software through intelligent mechanical systems.</p>
+                    <div class="hero-btns">
+                        <a href="#projects" class="btn btn-primary magnetic">See My Projects</a>
+                        <a href="#about" class="btn btn-outline magnetic">Read My Story</a>
+                    </div>
+                </div>
+                <!-- 3D Globe Container -->
+                <div class="hero-visual reveal-zoom stagger-2">
+                    <div id="globe-container"></div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>About Me</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="about-grid">
+                    <div class="about-image reveal-left">
+                        <div class="image-wrapper">
+                            <img src="assets/profile.jpg" alt="Profile Image">
+                        </div>
+                    </div>
+                    <div class="about-text reveal-right">
+                        <h3>Bridging Hardware & Software</h3>
+                        <p>I am a Level 100 Mechatronics Engineering student with a profound love for hardware. I thrive at the intersection of mechanical design and intelligent programming.</p>
+                        <p>My mission is to create machines that think and act, combining the precision of C++ and Python with the physical power of Arduino and mechanical engineering.</p>
+                        <div class="stats">
+                            <div class="stat-item reveal stagger-1">
+                                <span class="stat-num">Level 100</span>
+                                <span class="stat-label">Engineering Student</span>
+                            </div>
+                            <div class="stat-item reveal stagger-2">
+                                <span class="stat-num">4+</span>
+                                <span class="stat-label">Major Projects</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>Technical Expertise</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card reveal stagger-1">
+                        <div class="skill-icon"><i class="fas fa-microchip"></i></div>
+                        <h3>Embedded Systems</h3>
+                        <p>C++, Arduino, Sensor Integration, and Electronic Circuit Design.</p>
+                    </div>
+                    <div class="skill-card reveal stagger-2">
+                        <div class="skill-icon"><i class="fas fa-robot"></i></div>
+                        <h3>Robotics & AI</h3>
+                        <p>Python programming, control algorithms, and autonomous navigation.</p>
+                    </div>
+                    <div class="skill-card reveal stagger-3">
+                        <div class="skill-icon"><i class="fas fa-gears"></i></div>
+                        <h3>Mechanical Design</h3>
+                        <p>Currently mastering SolidWorks for precision 3D modeling and prototyping.</p>
+                    </div>
+                    <div class="skill-card reveal stagger-4">
+                        <div class="skill-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Analysis & Control</h3>
+                        <p>Learning MATLAB and Simulink for system simulation and data analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>Featured Projects</h2>
+                    <div class="underline"></div>
+                </div>
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card reveal-zoom stagger-1">
+                        <div class="project-image">
+                            <img src="assets/project1.jpg" alt="Modern Greenhouse">
+                            <div class="project-overlay">
+                                <a href="#" class="btn-icon"><i class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Automation</span>
+                            <h3>Modern Greenhouse</h3>
+                            <p>An automated smart agriculture system controlling climate and irrigation.</p>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="project-card reveal-zoom stagger-2">
+                        <div class="project-image">
+                            <img src="assets/project2.jpg" alt="Firefighting Robot">
+                            <div class="project-overlay">
+                                <a href="#" class="btn-icon"><i class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Robotics</span>
+                            <h3>Firefighting Robot</h3>
+                            <p>An autonomous robot designed to detect and extinguish fires in hazardous areas.</p>
+                        </div>
+                    </div>
+                    <!-- Project 3 -->
+                    <div class="project-card reveal-zoom stagger-3">
+                        <div class="project-image">
+                            <img src="assets/project3.jpg" alt="Self-balancing Robot">
+                            <div class="project-overlay">
+                                <a href="#" class="btn-icon"><i class="fas fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Control Systems</span>
+                            <h3>Self-balancing Robot</h3>
+                            <p>A two-wheeled robot using PID control to maintain vertical stability.</p>
+                        </div>
+                    </div>
+                    <!-- Project 4 -->
+                    <div class="project-card reveal-zoom stagger-4">
+                        <div class="project-image">
+                            <img src="assets/project4.jpg" alt="3D Printer">
+                            <div class="project-overlay">
+                                <a href="#" class="btn-icon"><i class="fas fa-tools"></i></a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <span class="project-category">Manufacturing</span>
+                            <h3>3D Printer (In Progress)</h3>
+                            <p>Developing a custom FDM 3D printer for high-precision mechanical parts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="contact-box reveal">
+                    <div class="contact-info reveal-left">
+                        <h2>Let's build something <span class="gradient-text">extraordinary</span>.</h2>
+                        <p>Have a project in mind? Or just want to say hi? Feel free to reach out!</p>
+                        <ul class="contact-details">
+                            <li><i class="fas fa-envelope"></i> mohamed663754@gmail.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i> 10th of Ramadan, Sharqia, Egypt</li>
+                            <li class="contact-socials">
+                                <a href="https://github.com/mohamed663754" target="_blank" class="magnetic"><i class="fab fa-github"></i></a>
+                                <a href="https://www.linkedin.com/in/mohamed663754" target="_blank" class="magnetic"><i class="fab fa-linkedin"></i></a>
+                                <a href="https://x.com/mohamed663754" target="_blank" class="magnetic"><i class="fab fa-x-twitter"></i></a>
+                                <a href="https://www.instagram.com/mo_14_10_36/?hl=ar" target="_blank" class="magnetic"><i class="fab fa-instagram"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <form class="contact-form reveal-right">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary magnetic">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo reveal-left">M. IBRAHIM<span>.</span></div>
+                <p class="reveal">&copy; 2024 Mohamed Ibrahim. All rights reserved.</p>
+                <div class="social-links reveal-right">
+                    <a href="https://www.linkedin.com/in/mohamed663754" target="_blank" class="magnetic"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/mohamed663754" target="_blank" class="magnetic"><i class="fab fa-github"></i></a>
+                    <a href="https://x.com/mohamed663754" target="_blank" class="magnetic"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/mo_14_10_36/?hl=ar" target="_blank" class="magnetic"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
