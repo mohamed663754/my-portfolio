@@ -1,16 +1,24 @@
 // Wait for the DOM to be fully loaded
 window.addEventListener('load', () => {
-    // Hide Preloader
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        preloader.classList.add('fade-out');
-    }
-    
-    // Initialize Digital Globe with Continent Details
-    if (typeof THREE !== 'undefined') {
-        initDetailedDigitalGlobe();
-    }
+    hidePreloader();
 });
+
+// Fail-safe: Hide preloader after 3 seconds regardless of load state
+setTimeout(() => {
+    hidePreloader();
+}, 3000);
+
+function hidePreloader() {
+    const preloader = document.getElementById('preloader');
+    if (preloader && !preloader.classList.contains('fade-out')) {
+        preloader.classList.add('fade-out');
+        
+        // Initialize Digital Globe after preloader starts fading
+        if (typeof THREE !== 'undefined') {
+            initDetailedDigitalGlobe();
+        }
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Header & Scroll
