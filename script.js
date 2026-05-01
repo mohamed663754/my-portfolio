@@ -22,20 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (progressBar) progressBar.style.width = scrolled + '%';
     });
 
-    // Custom Cursor
-    const cursor = document.querySelector('.cursor');
-    const follower = document.querySelector('.cursor-follower');
-    document.addEventListener('mousemove', (e) => {
-        if (cursor) { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }
-        if (follower) { follower.style.left = e.clientX + 'px'; follower.style.top = e.clientY + 'px'; }
-    });
-
-    const links = document.querySelectorAll('a, button, .project-card, .skill-card, .logo');
-    links.forEach(link => {
-        link.addEventListener('mouseenter', () => follower?.classList.add('active'));
-        link.addEventListener('mouseleave', () => follower?.classList.remove('active'));
-    });
-
     // Magnetic Buttons
     document.querySelectorAll('.magnetic').forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
