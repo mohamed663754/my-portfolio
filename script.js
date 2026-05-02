@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reveal Logic
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.05 });
     document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom').forEach(el => revealObserver.observe(el));
 });
 
@@ -206,5 +206,242 @@ function initDetailedDigitalGlobe() {
         renderer.setSize(container.clientWidth, container.clientHeight);
     });
 
+
     animate();
 }
+
+// =============================================
+//   ELEGANT INTERACTIVE BACKGROUND CANVAS
+// =============================================
+(function initBackgroundCanvas() {
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    // ── Palette ──────────────────────────────
+    const C = {
+        violet: { r: 139, g: 92,  b: 246 },
+        cyan:   { r: 6,   g: 182, b: 212 },
+        pink:   { r: 236, g: 72,  b: 153 },
+    };
+    const CKEYS = Object.keys(C);
+
+    // ── State ────────────────────────────────
+    let W, H, frame = 0;
+    let mouse = { x: -9999, y: -9999 };  // off screen initially
+    let particles = [], streams = [];
+
+    // ── Resize ───────────────────────────────
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        build();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // ── Track Mouse ──────────────────────────
+    window.addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => {
+        mouse.x = -9999;
+        mouse.y = -9999;
+    });
+
+    // ── Helpers ──────────────────────────────
+    function rc() { return C[CKEYS[Math.floor(Math.random() * CKEYS.length)]]; }
+    function rgba(c, a) { return `rgba(${c.r},${c.g},${c.b},${+a.toFixed(3)})`; }
+
+    // ── Build Scene ──────────────────────────
+    function build() {
+        // Elegant, fewer particles — quality over quantity
+        particles = Array.from({ length: 55 }, () => {
+            const col = rc();
+            return {
+                x:    Math.random() * W,
+                y:    Math.random() * H,
+                ox:   0, oy: 0,          // offset from mouse push
+                vx:   (Math.random() - 0.5) * 0.25,
+                vy:   (Math.random() - 0.5) * 0.25,
+                r:    Math.random() * 2 + 1,
+                glow: Math.random() * 14 + 8,
+                phase: Math.random() * Math.PI * 2,
+                freq:  Math.random() * 0.012 + 0.006,
+                col,
+            };
+        });
+
+        // Elegant flowing streams (horizontal with gentle wave)
+        streams = Array.from({ length: 8 }, (_, i) => ({
+            y:    (H / 8) * i + H / 16,
+            t:    Math.random(),          // normalized progress 0–1
+            spd:  Math.random() * 0.0008 + 0.0003,
+            len:  Math.random() * 0.22 + 0.08,
+            col:  rc(),
+            a:    Math.random() * 0.12 + 0.04,
+            wave: Math.random() * 0.015 + 0.005,
+            wAmp: Math.random() * 40 + 15,
+        }));
+    }
+
+    // ── Draw: Soft Aurora ────────────────────
+    function drawAurora() {
+        // Slow-drifting radial glow
+        const cx = W * 0.5 + Math.sin(frame * 0.0018) * W * 0.12;
+        const cy = H * 0.42 + Math.cos(frame * 0.0013) * H * 0.08;
+        const r  = Math.max(W, H) * 0.75;
+        const pulse = 0.022 + Math.sin(frame * 0.009) * 0.006;
+
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        g.addColorStop(0,   `rgba(139,92,246,${pulse})`);
+        g.addColorStop(0.35,`rgba(6,182,212,${pulse * 0.45})`);
+        g.addColorStop(0.7, `rgba(236,72,153,${pulse * 0.15})`);
+        g.addColorStop(1,   'rgba(3,7,18,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+
+        // Secondary smaller orb opposite side
+        const cx2 = W * 0.75 + Math.cos(frame * 0.0021) * W * 0.08;
+        const cy2 = H * 0.65 + Math.sin(frame * 0.0017) * H * 0.07;
+        const r2  = Math.max(W, H) * 0.4;
+        const g2  = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, r2);
+        g2.addColorStop(0,  `rgba(6,182,212,${pulse * 0.6})`);
+        g2.addColorStop(1,  'rgba(3,7,18,0)');
+        ctx.fillStyle = g2;
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    // ── Draw: Flowing Streams ─────────────────
+    function drawStreams() {
+        streams.forEach(s => {
+            s.t += s.spd;
+            if (s.t > 1 + s.len) s.t = -s.len;
+
+            const x0 = (s.t - s.len) * W;
+            const x1 =  s.t * W;
+            const wy  = s.y + Math.sin(frame * s.wave + s.y * 0.008) * s.wAmp;
+
+            const g = ctx.createLinearGradient(x0, wy, x1, wy);
+            g.addColorStop(0,   rgba(s.col, 0));
+            g.addColorStop(0.35,rgba(s.col, s.a));
+            g.addColorStop(0.65,rgba(s.col, s.a * 0.7));
+            g.addColorStop(1,   rgba(s.col, 0));
+
+            ctx.beginPath();
+            ctx.moveTo(x0, wy);
+            // Bezier curve for elegance
+            const cx = (x0 + x1) / 2;
+            ctx.quadraticCurveTo(cx, wy + Math.sin(frame * 0.01) * 12, x1, wy);
+            ctx.strokeStyle = g;
+            ctx.lineWidth   = 1.2;
+            ctx.stroke();
+        });
+    }
+
+    // ── Draw: Particles + Connections ─────────
+    const MOUSE_RADIUS   = 130;   // repulsion zone
+    const MOUSE_STRENGTH = 55;    // how far they get pushed
+    const CONNECT_DIST   = 140;
+
+    function drawParticles() {
+        particles.forEach(p => {
+            // Base movement
+            p.x += p.vx;
+            p.y += p.vy;
+            p.phase += p.freq;
+
+            // Wrap
+            if (p.x < -20) p.x = W + 20;
+            if (p.x > W + 20) p.x = -20;
+            if (p.y < -20) p.y = H + 20;
+            if (p.y > H + 20) p.y = -20;
+
+            // Mouse repulsion with spring return
+            const dxm = p.x - mouse.x;
+            const dym = p.y - mouse.y;
+            const dm  = Math.sqrt(dxm * dxm + dym * dym);
+            if (dm < MOUSE_RADIUS && dm > 0) {
+                const force = (1 - dm / MOUSE_RADIUS) * MOUSE_STRENGTH;
+                p.ox += (dxm / dm) * force * 0.12;
+                p.oy += (dym / dm) * force * 0.12;
+            }
+            // Spring return to (0,0) offset
+            p.ox *= 0.88;
+            p.oy *= 0.88;
+
+            const rx = p.x + p.ox;
+            const ry = p.y + p.oy;
+
+            // Breathing pulse
+            const pulse = p.r + Math.sin(p.phase) * 0.6;
+            const alpha = 0.45 + Math.sin(p.phase) * 0.25;
+
+            // Soft outer glow
+            const glow = p.glow + Math.sin(p.phase * 0.7) * 3;
+            const grad = ctx.createRadialGradient(rx, ry, 0, rx, ry, glow);
+            grad.addColorStop(0, rgba(p.col, alpha * 0.45));
+            grad.addColorStop(0.5, rgba(p.col, alpha * 0.1));
+            grad.addColorStop(1, rgba(p.col, 0));
+            ctx.beginPath();
+            ctx.arc(rx, ry, glow, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Core dot
+            ctx.beginPath();
+            ctx.arc(rx, ry, pulse, 0, Math.PI * 2);
+            ctx.fillStyle = rgba(p.col, alpha + 0.15);
+            ctx.fill();
+        });
+    }
+
+    function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const a  = particles[i], b = particles[j];
+                const ax = a.x + a.ox,  ay = a.y + a.oy;
+                const bx = b.x + b.ox,  by = b.y + b.oy;
+                const dx = ax - bx, dy = ay - by;
+                const d  = Math.sqrt(dx * dx + dy * dy);
+
+                if (d < CONNECT_DIST) {
+                    const t = 1 - d / CONNECT_DIST;
+                    const alpha = t * t * 0.2;   // quadratic falloff = elegant fade
+
+                    // Gradient line between the two particle colors
+                    const gl = ctx.createLinearGradient(ax, ay, bx, by);
+                    gl.addColorStop(0, rgba(a.col, alpha));
+                    gl.addColorStop(1, rgba(b.col, alpha));
+
+                    ctx.beginPath();
+                    ctx.moveTo(ax, ay);
+                    ctx.lineTo(bx, by);
+                    ctx.strokeStyle = gl;
+                    ctx.lineWidth   = t * 0.8;   // thinner = more elegant
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    // ── Main Loop ─────────────────────────────
+    function loop() {
+        frame++;
+
+        // Subtle trail (lower = more trail = dreamier look)
+        ctx.fillStyle = 'rgba(3, 7, 18, 0.18)';
+        ctx.fillRect(0, 0, W, H);
+
+        drawAurora();
+        drawStreams();
+        drawConnections();
+        drawParticles();
+
+        requestAnimationFrame(loop);
+    }
+
+    loop();
+})();
+
