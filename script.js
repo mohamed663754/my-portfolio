@@ -416,5 +416,3 @@ function initDetailedDigitalGlobe() {
 
     loop();
 })();
-
-
